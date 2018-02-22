@@ -9,8 +9,8 @@ from setuptools import find_packages, setup
 
 
 setup(name='scholar',
-      author='ckreibich',
       version='2.11.0',
+      py_modules=['scholar'],
       install_requires=[
           'beautifulsoup4',
       ],
