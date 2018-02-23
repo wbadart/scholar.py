@@ -10,13 +10,13 @@ from setuptools import find_packages, setup
 
 setup(name='scholar',
       version='2.11.0',
-      packages=['scholar'],
+      packages=find_packages(),
       install_requires=[
           'beautifulsoup4',
       ],
       entry_points={
           'console_scripts': [
-              'gscholar = scholar.__main__:main'
+              'gscholar = scholar.__main__:main',
           ],
       },
       zip_safe=False)
