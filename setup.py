@@ -14,4 +14,9 @@ setup(name='scholar',
       install_requires=[
           'beautifulsoup4',
       ],
+      entry_points={
+          'console_scripts': [
+              'scholar = scholar:main'
+          ],
+      },
       zip_safe=False)
