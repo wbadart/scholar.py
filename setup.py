@@ -9,7 +9,7 @@ from setuptools import find_packages, setup
 
 
 setup(name='scholar',
-      version='2.11.0',
+      version='2.11.1',
       packages=find_packages(),
       install_requires=[
           'beautifulsoup4',

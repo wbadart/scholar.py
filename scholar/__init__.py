@@ -938,10 +938,11 @@ class ScholarQuerier(object):
         def handle_article(self, art):
             self.querier.add_article(art)
 
-    def __init__(self):
+    def __init__(self, session):
         self.articles = []
         self.query = None
         self.cjar = MozillaCookieJar()
+        self._session = session
 
         # If we have a cookie file, load it:
         if ScholarConf.COOKIE_JAR_FILE and \
@@ -1088,17 +1089,22 @@ class ScholarQuerier(object):
         try:
             ScholarUtils.log('info', 'requesting %s' % unquote(url))
 
-            req = Request(url=url, headers={'User-Agent': ScholarConf.USER_AGENT})
-            hdl = self.opener.open(req)
-            html = hdl.read()
+            if self._session is None:
+                req = Request(url=url, headers={'User-Agent': ScholarConf.USER_AGENT})
+                hdl = self.opener.open(req)
+                html = hdl.read()
 
-            ScholarUtils.log('debug', log_msg)
-            ScholarUtils.log('debug', '>>>>' + '-'*68)
-            ScholarUtils.log('debug', 'url: %s' % hdl.geturl())
-            ScholarUtils.log('debug', 'result: %s' % hdl.getcode())
-            ScholarUtils.log('debug', 'headers:\n' + str(hdl.info()))
-            ScholarUtils.log('debug', 'data:\n' + html.decode('utf-8')) # For Python 3
-            ScholarUtils.log('debug', '<<<<' + '-'*68)
+                ScholarUtils.log('debug', log_msg)
+                ScholarUtils.log('debug', '>>>>' + '-'*68)
+                ScholarUtils.log('debug', 'url: %s' % hdl.geturl())
+                ScholarUtils.log('debug', 'result: %s' % hdl.getcode())
+                ScholarUtils.log('debug', 'headers:\n' + str(hdl.info()))
+                ScholarUtils.log('debug', 'data:\n' + html.decode('utf-8')) # For Python 3
+                ScholarUtils.log('debug', '<<<<' + '-'*68)
+
+            else:
+                req = self._session.get(url)
+                html = req.text
 
             return html
         except Exception as err:
